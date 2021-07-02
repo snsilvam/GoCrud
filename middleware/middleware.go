@@ -14,8 +14,9 @@ func Log(f func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *
 }
 func Authentication(f func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("password")
-		if token != "7752984" {
+		token := r.Header.Get("Authorization")
+		-, err := authorization.ValidateToken(token)
+		if err != nil {
 			forbidden(w, r)
 			return
 		}
